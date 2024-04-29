@@ -1,3 +1,9 @@
+/*
+ * AUTORES:
+ * María Victoria Huesca Peláez
+ * Eduardo García Rivas
+ */
+
 package org.boundedqueue;
 
 import static org.assertj.core.api.Assertions.*;
