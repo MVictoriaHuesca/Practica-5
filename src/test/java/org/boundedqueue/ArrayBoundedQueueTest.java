@@ -1,10 +1,14 @@
 package org.boundedqueue;
 
 import static org.assertj.core.api.Assertions.*;
+
+import java.util.Iterator;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mps.boundedqueue.ArrayBoundedQueue;
+import org.mps.boundedqueue.EmptyBoundedQueueException;
 //import org.springframework.test.util.ReflectionTestUtils;
 import org.mps.boundedqueue.FullBoundedQueueException;
 
@@ -122,9 +126,125 @@ public class ArrayBoundedQueueTest {
     @DisplayName("Tests para el método get")
     class TestGet {
         @Test
-        @DisplayName("")
-        
+        @DisplayName("Extraer último elemento de una cola vacía lanza excepción")
+        public void get_ColaVacia_LanzaExcepcion() {
+            ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<Integer>(3);
+
+            assertThatExceptionOfType(EmptyBoundedQueueException.class).isThrownBy(() -> {
+                queue.get();
+            }).withMessage("get: empty bounded queue");
+        }
+
+        @Test
+        @DisplayName("Extraer último elemento de una cola llena extrae correctamente el primer elemento")
+        public void get_ColaNoVacia_ExtraeCorrectamentePrimerElemento() {
+            ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<Integer>(3);
+            int first = 1;
+            int nextFree = 0;
+            int size = 2;
+
+            queue.put(1);
+            queue.put(2);
+            queue.put(3);
+
+            int item = queue.get();
+
+            assertThat(item).isEqualTo(1);
+            assertThat(queue.getFirst()).isEqualTo(first);
+            assertThat(queue.getLast()).isEqualTo(nextFree);
+            assertThat(queue.size()).isEqualTo(size);
+        }
+
+        @Test
+        @DisplayName("Extraer último elemento de una cola no llena extrae correctamente el último elemento")
+        public void get_ColaNoLlena_ExtraeCorrectamenteUltimoElemento() {
+            ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<Integer>(3);
+            int first = 1;
+            int nextFree = 2;
+            int size = 1;
+
+            queue.put(1);
+            queue.put(2);
+
+            int item = queue.get();
+
+            assertThat(item).isEqualTo(1);
+            assertThat(queue.getFirst()).isEqualTo(first);
+            assertThat(queue.getLast()).isEqualTo(nextFree);
+            assertThat(queue.size()).isEqualTo(size);
+        }
     }
-    
-    
+
+    @Nested
+@DisplayName("Tests for the iterator method")
+class TestIterator {
+    @Test
+    @DisplayName("Calling iterator on an empty queue returns an empty iterator")
+    public void iterator_EmptyQueue_ReturnsEmptyIterator() {
+        ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<>(3);
+
+        Iterator<Integer> iterator = queue.iterator();
+
+        assertThat(iterator.hasNext()).isFalse();
+    }
+
+    @Test
+    @DisplayName("LLamar al iterador en una cola llena recorre correctamente los elementos")
+    public void iterator_ColaLLena_RecorreCorrectamente() {
+        ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<>(3);
+        queue.put(1);
+        queue.put(2);
+        queue.put(3);
+
+        Iterator<Integer> iterator = queue.iterator();
+
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next()).isEqualTo(1);
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next()).isEqualTo(2);
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next()).isEqualTo(3);
+        assertThat(iterator.hasNext()).isFalse();
+    }
+
+    @Test
+    @DisplayName("Llamar al iterador con cola parcialmente llena recorre los elementos correctamente")
+    public void iterator_ColaParcialmenteLlena_RecorreCorrectamente() {
+        ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<>(3);
+        queue.put(1);
+        queue.put(2);
+
+        Iterator<Integer> iterator = queue.iterator();
+
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next()).isEqualTo(1);
+        assertThat(iterator.hasNext()).isTrue();
+        assertThat(iterator.next()).isEqualTo(2);
+        assertThat(iterator.hasNext()).isFalse();
+    }
+
+    @Test
+    @DisplayName("Llamar al iterador en una cola vacía hasNext() devuelve false")
+    public void iterator_ColaVacia_HasNextDevuelveFalse() {
+        ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<>(3);
+
+        Iterator<Integer> iterator = queue.iterator();
+
+        assertThat(iterator.hasNext()).isFalse();
+    }
+
+    @Test
+    @DisplayName("Llamar al iterador en una cola vacía next lanza excepción")
+    public void iterator_ColaVacia_NextLanzaExcepcion() {
+        ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<>(3);
+
+        Iterator<Integer> iterator = queue.iterator();
+
+        assertThatExceptionOfType(Exception.class).isThrownBy(() -> {
+            iterator.next();
+        }).withMessage("next: bounded queue iterator exhausted");
+    }
+}
+
+
 }
