@@ -1,3 +1,8 @@
+/*
+ * @autor1 = Eduardo García Rivas
+ * @autor2 = María Victoria Huesca Peláez
+ */
+
 package org.mps.boundedqueue;
 
 import org.junit.jupiter.api.*;
@@ -14,24 +19,17 @@ public class ArrayBoundedQueueTest {
     public class ConstructorTest {
         @Test
         @DisplayName("Test que prueba que se crea una cola vacía correctamente")
-        public void ArrayBoundedQueue_ColaVacia(){
+        public void ArrayBoundedQueue_ColaSeCreaCorrectamente(){
             int capacidad = 2;
             ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<>(capacidad);
             int first = 0;
             int nextFree = 0;
 
 
-            assertThat(queue)
-            .isNotNull();
-
-            assertThat(queue.isEmpty())
-            .isTrue();
-
-            assertThat(queue.getLast())
-            .isEqualTo(first);
-
-            assertThat(queue.getFirst())
-            .isEqualTo(nextFree);
+            assertThat(queue).isNotNull();
+            assertThat(queue.isEmpty()).isTrue();
+            assertThat(queue.getLast()).isEqualTo(first);
+            assertThat(queue.getFirst()).isEqualTo(nextFree);
         }
 
         @Test
@@ -56,20 +54,12 @@ public class ArrayBoundedQueueTest {
             int nextFree = 1;
             int size = 1;
 
-
             queue.put(23);
 
-            assertThat(queue)
-            .containsExactly(23);
-
-            assertThat(queue.getFirst())
-            .isEqualTo(first);
-
-            assertThat(queue.size())
-            .isEqualTo(size);
-
-            assertThat(queue.getLast())
-            .isEqualTo(nextFree);
+            assertThat(queue).containsExactly(23);
+            assertThat(queue.getFirst()).isEqualTo(first);
+            assertThat(queue.size()).isEqualTo(size);
+            assertThat(queue.getLast()).isEqualTo(nextFree);
         }
         @Test
         @DisplayName("Prueba que se añade un elemento en una posicion intermedia a la cola correctamente")
@@ -83,17 +73,13 @@ public class ArrayBoundedQueueTest {
             queue.put(23);
             queue.put(40);
 
-            assertThat(queue)
-            .containsExactly(23,40);
+            assertThat(queue).containsExactly(23,40);
 
-            assertThat(queue.getFirst())
-            .isEqualTo(first);
+            assertThat(queue.getFirst()).isEqualTo(first);
 
-            assertThat(queue.size())
-            .isEqualTo(size);
+            assertThat(queue.size()).isEqualTo(size);
 
-            assertThat(queue.getLast())
-            .isEqualTo(nextFree);
+            assertThat(queue.getLast()).isEqualTo(nextFree);
         }
 
         @Test
@@ -110,17 +96,10 @@ public class ArrayBoundedQueueTest {
             queue.put(55);
 
 
-            assertThat(queue)
-            .containsExactly(23,40,55);
-
-            assertThat(queue.getFirst())
-            .isEqualTo(first);
-
-            assertThat(queue.size())
-            .isEqualTo(size);
-
-            assertThat(queue.getLast())
-            .isEqualTo(nextFree);
+            assertThat(queue).containsExactly(23,40,55);
+            assertThat(queue.getFirst()).isEqualTo(first);
+            assertThat(queue.size()).isEqualTo(size);
+            assertThat(queue.getLast()).isEqualTo(nextFree);
         }
 
         @Test
@@ -154,7 +133,7 @@ public class ArrayBoundedQueueTest {
     public class getTest {
         @Test
         @DisplayName("Prueba que se elimina el ultimo elemento de la cola no llena correctamente")
-        public void get_SeEliminaCorrectamenteCuandoLaColaNoEstaLlena(){
+        public void get_SeEliminaCorrectamenteCuandoColaNoLlena(){
             int capacidad = 3;
             ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<>(capacidad);
             int first = 1;
@@ -164,22 +143,15 @@ public class ArrayBoundedQueueTest {
             queue.put(23);
             queue.put(40);
 
-            assertThat(queue.get())
-            .isEqualTo(23);
-
-            assertThat(queue.size())
-            .isEqualTo(size);
-
-            assertThat(queue.getFirst())
-            .isEqualTo(first);
-
-            assertThat(queue.getLast())
-            .isEqualTo(nextFree);
+            assertThat(queue.get()).isEqualTo(23);
+            assertThat(queue.size()).isEqualTo(size);
+            assertThat(queue.getFirst()).isEqualTo(first);
+            assertThat(queue.getLast()).isEqualTo(nextFree);
         }
 
         @Test
         @DisplayName("Prueba que se elimina el ultimo elemento de la cola llena correctamente")
-        public void get_SeEliminaCorrectamenteCuandoLaColaEstaLlena(){
+        public void get_SeEliminaCorrectamenteCuandoColaLlena(){
             int capacidad = 2;
             ArrayBoundedQueue<Integer> queue = new ArrayBoundedQueue<>(capacidad);
             int first = 1;
@@ -189,17 +161,10 @@ public class ArrayBoundedQueueTest {
             queue.put(23);
             queue.put(40);
 
-            assertThat(queue.get())
-            .isEqualTo(23);
-
-            assertThat(queue.size())
-            .isEqualTo(size);
-
-            assertThat(queue.getFirst())
-            .isEqualTo(first);
-
-            assertThat(queue.getLast())
-            .isEqualTo(nextFree);
+            assertThat(queue.get()).isEqualTo(23);
+            assertThat(queue.size()).isEqualTo(size);
+            assertThat(queue.getFirst()).isEqualTo(first);
+            assertThat(queue.getLast()).isEqualTo(nextFree);
         }
 
         @Test
@@ -227,14 +192,10 @@ public class ArrayBoundedQueueTest {
             queue.put(55);
 
             Iterator<Integer> it = queue.iterator();
-
             int aux=it.next();
 
-            assertThat(aux)
-            .isEqualTo(23);
-
-            assertThat(it.hasNext())
-            .isTrue();
+            assertThat(aux).isEqualTo(23);
+            assertThat(it.hasNext()).isTrue();
         }
 
         @Test
@@ -251,11 +212,8 @@ public class ArrayBoundedQueueTest {
             it.next();
             int aux=it.next();
 
-            assertThat(aux)
-            .isEqualTo(55);
-            
-            assertThat(it.hasNext())
-            .isFalse();
+            assertThat(aux).isEqualTo(55);
+            assertThat(it.hasNext()).isFalse();
         }
 
         @Test
@@ -266,8 +224,7 @@ public class ArrayBoundedQueueTest {
 
             Iterator<Integer> it = queue.iterator();
 
-            assertThat(it.hasNext())
-            .isFalse();
+            assertThat(it.hasNext()).isFalse();
         }
 
         @Test
